@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * Created by luwan on 2018/5/9.
  */
-class MyQueue{
+class MyQueue {
     private Object object;
 
 
