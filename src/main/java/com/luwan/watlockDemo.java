@@ -11,19 +11,20 @@ class Share{
     private  int number=0;
 
     Lock lock=new ReentrantLock();
-    private Condition condition=lock.newCondition();
+    private Condition c1=lock.newCondition();
+    private Condition c2=lock.newCondition();
     public  void increat(){
         lock.lock();
         try {
             //1、判断
             while (number != 0) {
-                condition.await();
+                c1.await();
             }
             //2、干活
             ++number;
             System.out.println(Thread.currentThread().getName()+"\t"+number);
             //3、通知
-            condition.signalAll();
+            c2.signal();
 
             }catch (InterruptedException e) {
                 e.printStackTrace();
@@ -38,14 +39,14 @@ class Share{
             //1、判断
             while (number == 0) {
 
-                condition.await();
+                c2.await();
 
             }
             //2、干活
             --number;
             System.out.println(Thread.currentThread().getName()+"\t"+number);
             //3、通知
-            condition.signalAll();
+            c1.signalAll();
 
         }catch (InterruptedException e) {
             e.printStackTrace();
@@ -68,23 +69,23 @@ public class watlockDemo {
             }
         },"AA"
         ).start();
-        new Thread(()->{
+   /*     new Thread(()->{
             for (int i=0;i<10;i++){
                 s.increat();
             }
         },"DD"
-        ).start();
+        ).start();*/
         new Thread(()->{
             for (int i=0;i<10;i++){
                 s.decreat();
             }
         },"BB"
         ).start();
-        new Thread(()->{
+    /*    new Thread(()->{
             for (int i=0;i<10;i++){
                 s.decreat();
             }
         },"CC"
-        ).start();
+        ).start();*/
     }
 }

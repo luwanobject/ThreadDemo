@@ -9,7 +9,7 @@ class ShareDta{
 
     public synchronized void increat() throws InterruptedException {
         //1.判断
-        if(number!=0){
+        while(number!=0){
             this.wait();
         }
        //2、干活
@@ -22,7 +22,7 @@ class ShareDta{
 
     public synchronized void decreat() throws InterruptedException {
         //1.判断
-        if(number==0){
+        while(number==0){
             this.wait();
         }
         //2、干活
@@ -54,6 +54,24 @@ public class waitnotify {
                 e.printStackTrace();
             }
         },"BB").start();
+        new Thread(()->{
+            try {
+                for (int i=0;i<10;i++){
+                    shareDta.increat();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        },"DD").start();
+        new Thread(()->{
+            try {
+                for (int i=0;i<10;i++){
+                    shareDta.decreat();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        },"CC").start();
     }
 
 }
